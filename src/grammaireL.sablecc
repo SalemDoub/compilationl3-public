@@ -29,10 +29,13 @@ r_croch=']';
 
 si='si';
 sinon='sinon';
+alors='alors'
 retour='retour';
 faire='faire';
 tantque='tantque';
 finligne='\n';
+ecrire='ecrire';
+lire='lire';
 
 
 Ignored Tokens
@@ -40,16 +43,39 @@ Ignored Tokens
 espaces, commentaire;
 
 Productions
-EXPR= {ou} EXPR ou AND| {et} AND
-AND ={et} AND et LOG| {logique} LOG
-LOG = {egal} LOG egal G |{inf} LOG inf G |{addsousc} G
-G = {plus} G plus H |{minus}  G minus H | {factor} H
-H = {mult} H mult Y | {divise} H div Y | {yn} Y
-Y= {no} non Z | {yes} Z
-Z= {} l_par EXPR  r_par | {nombre} ENTIER | {appelfonction} APPEL
+EXPR= {ou} EXPR ou AND | {et} AND ;
+AND ={et} AND  et LOG | {logique} LOG ;
+LOG = {egal} LOG egal G |{inf} LOG inf G |{addsousc} G ;
+G = {plus} G plus H |{minus}  G minus H | {factor} H ;
+H = {mult} H mult Y | {divise} H div Y | {yn} Y ;
+Y= {no} non Z | {yes} Z ;
+Z= {} l_par EXPR  r_par | {nombre} ENTIER | {appelfonction} APPEL | VAR ;
 
-ENTIER = {listenombre}number ENTIER |{unnombre} number
+ENTIER = {listenombre} number ENTIER |{unnombre} number ;
 
+
+
+APPEL= IDENTIF(EXPR) ;
+
+INSTR = AFFECTATION | SIALORS | SISINON | TANTQUE | RETOUR | APPELSIMPLE | APPELPREDIFINI | BLOCISNSTR ;
+
+AFFECTATION = VAR=EXPR ;
+SIALORS = si EXPR alors INSTR ;
+SISION = si EXPR alors sinon INSTR;
+TANTQUE = tantque EXPR faire INSTR;
+RETOUR = retour EXPR ;
+APPELSIMPLE = APPEL ;
+APPELPREDIFINI = ecrire(EXPR) | lire();
+BLOCINSTR=INSTRLIST| ;
+INSTRLIST= INSTRLIST ; INSTR  ; | ;
+
+DECLARE = VAR ; FONCTION | FONCTION | ;
+VAR = entier IDENTIF SEQVAR | ;
+SEQVAR = , entier IDENTIF |, entier IDENTIF [EXPR] ;
+FONCTION = IDENTIF(VAR ) SEQFONCTION | ;
+SEQFONCTION = , IDENTIF(VAR ) | ;
+IDENTIF=LISTELETTRES ;
+LISTELETTRES = lettre LISTELETTRES | ;
 
 
 programme = optdecvar listedecfonc ;
