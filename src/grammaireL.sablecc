@@ -3,83 +3,173 @@ Package sc;
 Helpers
 
 lettre = [['a' .. 'z'] + ['A' .. 'Z']];
+chiffre = ['0' .. '9'];
+alpha = [lettre + ['_' + '$']];
+alphanum = [lettre + chiffre];
 
 Tokens
 
 espaces = (' ' | 13 | 10)+;
 commentaire= '#' [[0 .. 0xffff] - [10 + 13]]* (10 | 13 | 10 13);
-number = ['0'..'9']+;
-plus ='+';
-minus ='-';
-mult='*';
-div ='/';
-mod ='%';
-l_par ='(';
-r_par =')';
-blank = (''| 13 | 10)+;
-l_acc='{';
-r_acc='}';
-et='&';
-ou='|';
-non='!';
-inf='<';
+virgule = ',';
+divise = '/';
+point_virgule = ';';
+fois = '*';
+moins = '-';
+parenthese_ouvrante = '(';
+parenthese_fermante = ')';
+crochet_ouvrant = '[';
+crochet_fermant = ']';
+accolade_ouvrante = '{';
+accolade_fermante = '}';
 egal = '=';
-l_croch='[';
-r_croch=']';
-
-si='si';
-sinon='sinon';
-alors='alors'
-retour='retour';
-faire='faire';
-tantque='tantque';
-finligne='\n';
-ecrire='ecrire';
-lire='lire';
-
+inferieur = '<';
+et = '&';
+ou = '|';
+non = '!';
+plus = '+';
+si = 'si';
+alors = 'alors';
+sinon = 'sinon';
+tantque = 'tantque';
+faire = 'faire';
+entier = 'entier';
+retour = 'retour';
+lire = 'lire';
+ecrire = 'ecrire';
+nombre = chiffre+;
+identif = alpha alphanum*;
 
 Ignored Tokens
 
 espaces, commentaire;
 
 Productions
-EXPR= {ou} EXPR ou AND | {et} AND ;
-AND ={et} AND  et LOG | {logique} LOG ;
-LOG = {egal} LOG egal G |{inf} LOG inf G |{addsousc} G ;
-G = {plus} G plus H |{minus}  G minus H | {factor} H ;
-H = {mult} H mult Y | {divise} H div Y | {yn} Y ;
-Y= {no} non Z | {yes} Z ;
-Z= {} l_par EXPR  r_par | {nombre} ENTIER | {appelfonction} APPEL | VAR ;
 
-ENTIER = {listenombre} number ENTIER |{unnombre} number ;
+programme =
+{decvarldecfonc} optdecvar listedecfonc |
+{ldecfonc} listedecfonc;
 
+optdecvar = listedecvar point_virgule;
 
+listedecvar =
+{decvarldecvar} decvar listedecvarbis |
+{decvar} decvar;
 
-APPEL= IDENTIF(EXPR) ;
+listedecvarbis =
+{decvarldecvar} virgule decvar listedecvarbis|
+{decvar} virgule decvar ;
 
-INSTR = AFFECTATION | SIALORS | SISINON | TANTQUE | RETOUR | APPELSIMPLE | APPELPREDIFINI | BLOCISNSTR ;
+decvar =
+{decvarentier} entier identif |
+{decvartableau} entier identif crochet_ouvrant nombre crochet_fermant ;
 
-AFFECTATION = VAR=EXPR ;
-SIALORS = si EXPR alors INSTR ;
-SISION = si EXPR alors sinon INSTR;
-TANTQUE = tantque EXPR faire INSTR;
-RETOUR = retour EXPR ;
-APPELSIMPLE = APPEL ;
-APPELPREDIFINI = ecrire(EXPR) | lire();
-BLOCINSTR=INSTRLIST| ;
-INSTRLIST= INSTRLIST ; INSTR  ; | ;
+listedecfonc =
+{ldecfoncrec} decfonc listedecfonc |
+{ldecfoncfinal} ;
 
-DECLARE = VAR ; FONCTION | FONCTION | ;
-VAR = entier IDENTIF SEQVAR | ;
-SEQVAR = , entier IDENTIF |, entier IDENTIF [EXPR] ;
-FONCTION = IDENTIF(VAR ) SEQFONCTION | ;
-SEQFONCTION = , IDENTIF(VAR ) | ;
-IDENTIF=LISTELETTRES ;
-LISTELETTRES = lettre LISTELETTRES | ;
+decfonc =
+{decvarinstr} identif listeparam optdecvar instrbloc |
+{instr} identif listeparam instrbloc ;
 
+listeparam =
+{sansparam} parenthese_ouvrante parenthese_fermante |
+{avecparam} parenthese_ouvrante listedecvar parenthese_fermante ;
 
-programme = optdecvar listedecfonc ;
+instr =
+{instraffect} instraffect |
+{instrbloc } instrbloc |
+{instrsi } instrsi |
+{instrtantque } instrtantque |
+{instrappel } instrappel |
+{instrretour } instrretour |
+{instrecriture } instrecriture |
+{instrvide} instrvide ;
 
+instraffect = var egal exp point_virgule ;
 
+instrbloc = accolade_ouvrante listeinst accolade_fermante ;
 
+//listeinst = instr*;
 
+listeinst =
+{linstrec} instr listeinst |
+{linstfinal} ;
+
+instrsi =
+{avecsinon} si exp alors instrbloc instrsinon |
+{sanssinon} si exp alors instrbloc ;
+
+instrsinon = sinon instrbloc ;
+
+instrtantque = tantque exp faire instrbloc ;
+
+instrappel = appelfct point_virgule ;
+
+instrretour = retour exp point_virgule ;
+
+instrecriture = ecrire parenthese_ouvrante exp parenthese_fermante point_virgule ;
+
+instrvide = point_virgule ;
+
+//################################################################################
+// exp (booléennes, arithmétiques) avec implémentation des priorités.
+// ordre croissant de priorités comme suit (le | a la plus petite priorité)=
+// 7. | (ou)
+// 6. & (et)
+// 5. < =
+// 4. + -
+// 3. * /
+// 2. ! (non)
+// 1. (exp) appelfct var[exp]
+//###############################################################################*/
+
+exp =
+{ou} exp ou exp1 |
+{exp1} exp1;
+
+exp1 =
+{et} exp1 et exp2 |
+{exp2} exp2;
+
+exp2 =
+{inf} exp2 inferieur exp3 |
+{egal} exp2 egal exp3 |
+{exp3} exp3;
+
+exp3 =
+{plus} exp3 plus exp4 |
+{moins} exp3 moins exp4 |
+{exp4} exp4 ;
+
+exp4 =
+{fois} exp4 fois exp5 |
+{divise} exp4 divise exp5 |
+{exp5} exp5 ;
+
+exp5 =
+{non} non exp5 |
+{exp6} exp6 ;
+
+exp6 =
+ {nombre} nombre |
+ {appelfct} appelfct |
+ {var} var |
+ {parentheses} parenthese_ouvrante exp parenthese_fermante |
+ {lire} lire parenthese_ouvrante parenthese_fermante ;
+
+// accès à une variable, case d'un tableau ou appel à fonction
+
+var =
+{vartab} identif crochet_ouvrant exp crochet_fermant |
+{varsimple} identif ;
+
+listeexp =
+{recursif} exp listeexpbis|
+{final} ;
+
+listeexpbis =
+{recursif} virgule exp listeexpbis |
+{final} ;
+
+appelfct = identif parenthese_ouvrante listeexp parenthese_fermante ;
