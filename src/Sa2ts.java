@@ -33,6 +33,11 @@ public class Sa2ts extends SaDepthFirstVisitor {
     }
 
     @Override
+    public Object visit(SaVarSimple node) {
+        return super.visit(node);
+    }
+
+    @Override
     public Object visit(SaDecFonc node) {
         if(node.getParametres()==null){
             param=0;
@@ -62,18 +67,17 @@ public class Sa2ts extends SaDepthFirstVisitor {
     }
 
     @Override
-    public Object visit(SaVarSimple node) {
+    public Object visit(SaVarIndicee node) {
         return super.visit(node);
     }
+
+
 
     @Override
     public Object visit(SaAppel node) {
         return super.visit(node);
     }
 
-    @Override
-    public Object visit(SaVarIndicee node) {
-        return super.visit(node);
-    }
+
 }
 
