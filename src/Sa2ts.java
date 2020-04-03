@@ -10,6 +10,7 @@ public class Sa2ts extends SaDepthFirstVisitor {
 
     public Sa2ts(SaNode saRoot) {
         visit((SaProg) saRoot);
+
     }
 
     public Ts getTableGlobale() {
