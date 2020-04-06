@@ -46,34 +46,205 @@ public class Fg implements NasmVisitor <Void> {
 	}
     }
     
-    public Void visit(NasmAdd inst){return null;}
-    public Void visit(NasmCall inst){return null;}
-    public Void visit(NasmDiv inst){return null;}
-    public Void visit(NasmJe inst){return null;}
-    public Void visit(NasmJle inst){return null;}
-    public Void visit(NasmJne inst){return null;}
-    public Void visit(NasmMul inst){return null;}
-    public Void visit(NasmOr inst){return null;}
-    public Void visit(NasmCmp inst){return null;}
-    public Void visit(NasmInst inst){return null;}
-    public Void visit(NasmJge inst){return null;}
-    public Void visit(NasmJl inst){return null;}
-    public Void visit(NasmNot inst){return null;}
-    public Void visit(NasmPop inst){return null;}
-    public Void visit(NasmRet inst){return null;}
-    public Void visit(NasmXor inst){return null;}
-    public Void visit(NasmAnd inst){return null;}
-    public Void visit(NasmJg inst){return null;}
-    public Void visit(NasmJmp inst){return null;}
-    public Void visit(NasmMov inst){return null;}
-    public Void visit(NasmPush inst){return null;}
-    public Void visit(NasmSub inst){return null;}
-    public Void visit(NasmEmpty inst){return null;}
+    public Void visit(NasmAdd inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
 
-    public Void visit(NasmAddress operand){return null;}
-    public Void visit(NasmConstant operand){return null;}
-    public Void visit(NasmLabel operand){return null;}
-    public Void visit(NasmRegister operand){return null;}
+        return null;
+    }
+    public Void visit(NasmCall inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmDiv inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJe inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJle inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJne inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmMul inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmOr inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmCmp inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmInst inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJge inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJl inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmNot inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmPop inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmRet inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmXor inst){
+
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmAnd inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJg inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmJmp inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmMov inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmPush inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmSub inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+    public Void visit(NasmEmpty inst){
+        Node node = graph.newNode();
+        label2Inst.put(inst.label.toString(),inst);
+        inst2Node.put(inst,node);
+        node2Inst.put(node,inst);
+
+        return null;
+    }
+
+    public Void visit(NasmAddress operand){
+        return null;
+    }
+    public Void visit(NasmConstant operand){
+        return null;
+    }
+    public Void visit(NasmLabel operand){
+        return null;
+    }
+    public Void visit(NasmRegister operand){
+        return null;
+    }
+
 
 
 }
